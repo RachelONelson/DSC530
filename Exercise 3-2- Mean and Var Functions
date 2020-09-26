@@ -1,0 +1,41 @@
+"""
+title: "Exercise 3-2"
+author: Rachel Nelson
+date: 9/26/2020
+class: DSC530-T303 Data Exploration and Analysis (2211-1)
+"""
+
+#import packages
+import numpy as np
+import pandas
+import nsfg
+import first
+import thinkstats2
+import thinkplot
+
+# NSFG respondent variable NUMKDHH to construction the actual distribution for the
+# number of children under 18 in the household
+resp = nsfg.ReadFemResp()
+pmf = thinkstats2.Pmf(resp.numkdhh, label='actual')
+
+# Write functions called pmfMean and pmfVar that take a PMF object and compute the mean and variance
+def PmfMean(pmf):
+    mean = 0.0
+    for x, p in pmf.d.items():
+        mean += p * x
+    return mean
+
+def PmfVar(pmf, mu=None):
+    if mu is None:
+        mu = pmf.Mean()
+    var = 0.0
+    for x, p in pmf.d.items():
+        var += p * (x - mu) ** 2
+    return var
+
+# Check that they are consistent with the methods mean and Var provided by Pmf
+print('The actual pmf mean is: ', "{:.2f}".format(pmf.Mean()))
+print('The mean from the PmfMean function is: ', "{:.2f}".format(PmfMean(pmf)))
+
+print('The actual pmf var is: ', "{:.2f}".format(pmf.Var()))
+print('The var from the PmfVar function is: ', "{:.2f}".format(PmfVar(pmf)))
