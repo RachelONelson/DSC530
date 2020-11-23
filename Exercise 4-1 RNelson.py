@@ -1,0 +1,35 @@
+"""
+title: "Exercise 4-1"
+author: Rachel Nelson
+date: 9/26/2020
+class: DSC530-T303 Data Exploration and Analysis (2211-1)
+"""
+#import packages
+import numpy as np
+import pandas
+import nsfg
+import first
+import thinkstats2
+import thinkplot
+
+# reads pregnancy data from NSFG
+preg = nsfg.ReadFemPreg()
+live = preg[preg.outcome == 1]
+
+# divides birth into first births and other births
+firsts = live[live.birthord == 1]
+others = live[live.birthord != 1]
+
+first_cdf = thinkstats2.Cdf(firsts.totalwgt_lb, label='first')
+other_cdf = thinkstats2.Cdf(others.totalwgt_lb, label='other')
+
+# Distribution of birth weights plotted
+thinkplot.PrePlot(2)
+thinkplot.Cdfs([first_cdf, other_cdf])
+thinkplot.Config(xlabel='Weight (pounds)', ylabel='CDF')
+thinkplot.show()
+
+
+# Uses NSFB data for live births and other babies, find out my percentile
+per = other_cdf.PercentileRank(6.6875)
+print('When I was born, I was 6.6875 lbs and in the', "{:.2f}".format(per), "percentile.")
